@@ -1,0 +1,22 @@
+{
+    "Books": {
+        "4": {
+            "Author": "R",
+            "Available Copies": 1,
+            "Id": 4,
+            "Quantity": 2
+        },
+        "Harry Potter": {
+            "Author": "JK Rowling",
+            "Available Copies": 100,
+            "Id": "88",
+            "Quantity": 100
+        },
+        "t": {
+            "Author": "E",
+            "Available Copies": 2,
+            "Id": 5,
+            "Quantity": 3
+        }
+    }
+}
