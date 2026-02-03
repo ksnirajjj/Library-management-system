@@ -4,6 +4,8 @@
 #include "json.hpp"
 #include <string>
 #include <cctype>
+#include <cstdlib>
+#include "picosha2.h"
 
 using namespace std;
 using json = nlohmann::json; 
@@ -133,7 +135,25 @@ string toUpper(string s){
     return u; 
 }
 
-int main(){
-    cout << toUpper(" hello world    "); 
+//generate salt for pasword hashing
+string generateSalt(){
+    const string characters = "abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()"; 
+    string salt; 
+
+    for(int i=0; i<10; i++){
+        salt+= characters[rand()% characters.length()]; 
+    }
+    return salt; 
 }
 
+//hash the password obtained from the user
+string hashPassword(string password, string salt ){
+    return picosha2::hash256_hex_string(password + salt);
+}
+
+
+int main(){
+    for(int i=0; i<10; i++){
+        cout << hashPassword("niraj", "shrestha") << endl; 
+    }
+}
