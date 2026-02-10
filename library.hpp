@@ -28,4 +28,14 @@ void viewAllBooks();
 void searchBooks(string key1, string key2); 
 
 string toUpper(string s); 
+
+string generateSalt(); 
+
+string hashPassword(string password, string salt ); 
+
+bool checkUsername(string username); 
+
+void createAccount(string username, string userType, string password); 
+
+string LogIn(string username, string password); 
 #endif

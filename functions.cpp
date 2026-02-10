@@ -151,9 +151,70 @@ string hashPassword(string password, string salt ){
     return picosha2::hash256_hex_string(password + salt);
 }
 
+//checking if a given username exists
+bool checkUsername(string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data; 
 
-int main(){
-    for(int i=0; i<10; i++){
-        cout << hashPassword("niraj", "shrestha") << endl; 
+    for(auto it=data["User Info"].begin(); it!= data["User Info"].end(); it++){
+        json& currentUser = it.value(); 
+
+        if(it.key()== username) return true; 
     }
+    return false; 
 }
+
+void createAccount(string username, string userType, string password){
+    string salt = generateSalt(); 
+    string hashedPassword = hashPassword(password, salt);
+
+     ifstream file("library_data.json"); 
+     json data; 
+     file >> data; 
+
+     data["User Info"][username] = {
+        {"Salt", salt}, 
+        {"Hashed Password", hashedPassword}, 
+        {"User Type", toUpper(userType)}, 
+     };
+    
+    ofstream output("library_data.json"); 
+    output << data.dump(4); 
+}
+
+string LogIn(string username, string password){
+    string salt; 
+
+    ifstream file("library_data.json"); 
+    json data; 
+    file>> data; 
+
+    bool found = false; 
+
+    string userType; 
+
+    for(auto it=data["User Info"].begin(); it!= data["User Info"].end(); it++){
+        json& currentUser = it.value(); 
+
+        if(it.key() == username){
+            salt = currentUser["Salt"]; 
+            if(hashPassword(password,salt) == currentUser["Hashed Password"]){
+                cout << "Welcome " << username << endl; 
+                found = true; 
+                userType = currentUser["User Type"]; 
+            }
+            else{
+                cout << "Incorrect password." << endl; 
+                found = true; 
+            }
+        }
+
+    }
+    if(found == false){
+        cout << "Username does not exist. " << endl; 
+    }
+    return userType; 
+}
+
+

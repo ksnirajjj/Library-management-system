@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/nirajshrestha/Desktop/CS projects personal/library management system",
+      "program": "/Users/nirajshrestha/Desktop/CS projects personal/library management system/build/Debug/outDebug"
+    }
+  ]
+}

@@ -1,5 +1,11 @@
 {
     "Books": {
+        "": {
+            "Author": "",
+            "Available Copies": 0,
+            "Id": "",
+            "Quantity": 0
+        },
         "4": {
             "Author": "R",
             "Available Copies": 1,
@@ -17,6 +23,18 @@
             "Available Copies": 2,
             "Id": 5,
             "Quantity": 3
+        }
+    },
+    "User Info": {
+        "anusha": {
+            "Hashed Password": "0ac020e71eb74631bfff66e5451ab52ad2482b9bde7125c62ef52cbedfc0d6f4",
+            "Salt": "!0gi@dxta1",
+            "User Type": "Student"
+        },
+        "niraj": {
+            "Hashed Password": "c16dbdb3ff2671b31eb29ffdcbdd60bdd3f68bb3a606606608ec9bd21bd81d71",
+            "Salt": "rn25mi(szr",
+            "User Type": "Admin"
         }
     }
 }
