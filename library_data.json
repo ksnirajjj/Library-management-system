@@ -14,16 +14,26 @@
         },
         "Harry Potter": {
             "Author": "JK Rowling",
-            "Available Copies": 100,
+            "Available Copies": 99,
             "Id": "88",
             "Quantity": 100
         },
         "t": {
             "Author": "E",
-            "Available Copies": 2,
+            "Available Copies": 1,
             "Id": 5,
             "Quantity": 3
         }
+    },
+    "Borrowed Books": {
+        "anusha": {
+            "t": [
+                [
+                    "Borrowed"
+                ]
+            ]
+        },
+        "niraj": {}
     },
     "User Info": {
         "anusha": {

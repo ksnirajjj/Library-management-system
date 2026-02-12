@@ -38,4 +38,8 @@ bool checkUsername(string username);
 void createAccount(string username, string userType, string password); 
 
 string LogIn(string username, string password); 
+
+void borrowBook(string title, string username); 
+
+void returnBook(string title, string username); 
 #endif

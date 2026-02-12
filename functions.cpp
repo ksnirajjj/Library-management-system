@@ -5,6 +5,7 @@
 #include <string>
 #include <cctype>
 #include <cstdlib>
+#include <ctime>
 #include "picosha2.h"
 
 using namespace std;
@@ -34,8 +35,10 @@ int Book::getAvailableCopies(){
             cout << "Enter title: "; 
             cin.ignore(); 
             getline(cin, title); 
+            title = toUpper(title); 
             cout << "Enter the name of the author: "; 
             getline(cin, author); 
+            author = toUpper(author); 
             cout << "Enter id: "; 
             cin >> id; 
             cout << "Enter quantity ";
@@ -217,4 +220,78 @@ string LogIn(string username, string password){
     return userType; 
 }
 
+/*tm* getDayandTime(){
+    time_t now = time(nullptr); 
+    tm* localTime = localtime(&now); 
 
+    return localTime; 
+}*/
+
+
+void borrowBook(string title, string username){
+    bool bookPresent = false; 
+    ifstream file("library_data.json"); 
+    json data; 
+    file>>data; 
+
+    for(auto it = data["Books"].begin(); it!=data["Books"].end(); it++){
+        json& currentBook = it.value(); 
+        if(it.key() == title){
+            bookPresent = true; 
+            int availableCopies = currentBook.value("Available Copies", 0); 
+            if(availableCopies >0){
+                availableCopies--; 
+                cout << "You have borrowed successfully. " << endl; 
+                currentBook["Available Copies"] = availableCopies; 
+            }
+        }   
+    }
+    if(bookPresent == false){
+            cout << "We do not have that book at the moment. " << endl; 
+        }
+    else{
+        data["Borrowed Books"][username][title] = {
+                {"Borrowed"}
+            }; 
+    }
+    
+    ofstream output("library_data.json"); 
+    output << data.dump(4); 
+    
+}
+
+void returnBook(string title, string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file>>data; 
+    bool found = false; 
+
+    for(auto it = data["Borrowed Books"][username].begin(); it!=data["Borrowed Books"][username].end(); it++){
+        json& currentBook = it.value(); 
+
+        if(it.key()==title){
+            found = true; 
+        }
+    }
+    if(found == false){
+            cout << "You have not borrowed that book. " << endl; 
+            return;  
+        }
+    else{
+        for(auto it = data["Books"].begin(); it!=data["Books"].end(); it++){
+            json& currentBook = it.value(); 
+            if(it.key() == title){
+                int availableCopies = currentBook.value("Available Copies", 0); 
+                    availableCopies++; 
+                    cout << "You have returned successfully. " << endl; 
+                    currentBook["Available Copies"] = availableCopies; 
+                }
+            }   
+    
+        data["Borrowed Books"][username].erase(title); 
+    }
+    ofstream output("library_data.json"); 
+    output << data.dump(4); 
+}
+   
+    

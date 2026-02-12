@@ -13,6 +13,8 @@ int main(){
     int choice1; // main menu choice
     int choice2;  // choice to search book by
     string key1, key2; 
+    string titleToBorrow; 
+    string titleToReturn; 
 
     //display main window for login or creating account
     string username, password, userType; 
@@ -108,6 +110,22 @@ int main(){
                         getline(cin, key2); 
                         key2 = toUpper(key2); 
                         searchBooks(key1, key2); 
+                        goto loginMenuStudent; 
+                        break; 
+                    case 2:
+                        cout << "Enter the title of the book you want to borrow: "; 
+                        cin.ignore(); 
+                        getline(cin, titleToBorrow); 
+                        titleToBorrow = toUpper(titleToBorrow); 
+                        borrowBook(titleToBorrow, username); 
+                        goto loginMenuStudent; 
+                        break; 
+                    case 3:
+                        cout << "Enter the title of the book you want to return: "; 
+                        cin.ignore(); 
+                        getline(cin, titleToReturn); 
+                        titleToReturn = toUpper(titleToReturn);  
+                        returnBook(titleToReturn, username); 
                         goto loginMenuStudent; 
                         break; 
                     case 4:
