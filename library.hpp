@@ -42,4 +42,16 @@ string LogIn(string username, string password);
 void borrowBook(string title, string username); 
 
 void returnBook(string title, string username); 
+
+double getDate(); 
+
+vector<string> overdueBooks(string username); 
+
+void displayOverdueBooks(string username); 
+
+void displayBooks(string username); 
+
+double calculateFine(string username); 
+
+void displayFine(string username); 
 #endif

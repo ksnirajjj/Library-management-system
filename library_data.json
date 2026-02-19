@@ -8,30 +8,36 @@
         },
         "4": {
             "Author": "R",
-            "Available Copies": 1,
+            "Available Copies": 0,
             "Id": 4,
             "Quantity": 2
         },
         "Harry Potter": {
             "Author": "JK Rowling",
-            "Available Copies": 99,
+            "Available Copies": 96,
             "Id": "88",
             "Quantity": 100
         },
-        "t": {
+        "T": {
             "Author": "E",
-            "Available Copies": 1,
+            "Available Copies": 0,
             "Id": 5,
             "Quantity": 3
         }
     },
     "Borrowed Books": {
         "anusha": {
-            "t": [
-                [
-                    "Borrowed"
-                ]
-            ]
+            "4": {
+                "Date Borrowed": 20503.0,
+                "Fine": 6.0
+            },
+            "Harry Potter": {
+                "Date Borrowed": 20486
+            },
+            "T": {
+                "Date Borrowed": 20503.0,
+                "Fine": 6.0
+            }
         },
         "niraj": {}
     },

@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "picosha2.h"
+#include "time.h"
 
 using namespace std;
 using json = nlohmann::json; 
@@ -220,19 +221,22 @@ string LogIn(string username, string password){
     return userType; 
 }
 
-/*tm* getDayandTime(){
+double getDate(){
     time_t now = time(nullptr); 
-    tm* localTime = localtime(&now); 
-
-    return localTime; 
-}*/
-
+    return static_cast<double>(now/86400); 
+}
 
 void borrowBook(string title, string username){
     bool bookPresent = false; 
     ifstream file("library_data.json"); 
     json data; 
     file>>data; 
+
+    if(data["Borrowed Books"][username].size() >= 3){
+        cout << "You have already borrowed 3 books. Please return one or more to borrow new books " << endl; 
+        return;
+    }; 
+    
 
     for(auto it = data["Books"].begin(); it!=data["Books"].end(); it++){
         json& currentBook = it.value(); 
@@ -251,7 +255,7 @@ void borrowBook(string title, string username){
         }
     else{
         data["Borrowed Books"][username][title] = {
-                {"Borrowed"}
+                {"Date Borrowed", getDate()}
             }; 
     }
     
@@ -293,5 +297,76 @@ void returnBook(string title, string username){
     ofstream output("library_data.json"); 
     output << data.dump(4); 
 }
-   
-    
+
+vector<string> overdueBooks(string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data; 
+    vector<string> bookList = {}; 
+
+    for(auto it = data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
+        json& currentUser = it.value(); 
+
+        if(getDate()-currentUser["Date Borrowed"].get<double>() > 14){
+            bookList.push_back(it.key()); 
+        }
+    }
+    return bookList; 
+}
+
+void displayOverdueBooks(string username){
+    vector <string> bookList = overdueBooks(username); 
+
+    for(int i=0; i<bookList.size(); i++){
+        cout << bookList[i] << endl; 
+    }
+}
+
+void displayBooks(string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data; 
+
+    for(auto it= data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
+        cout << it.key() << endl; 
+    }
+}
+
+double calculateFine(string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data; 
+    double fine; 
+
+    for(auto it = data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
+        json& currentUser = it.value(); 
+
+        if(getDate()-currentUser["Date Borrowed"].get<double>() > 14){
+            fine +=  (getDate()-currentUser["Date Borrowed"].get<double>()-14)*2; 
+        }
+    }
+    return fine; 
+}
+
+void displayFine(string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data; 
+
+    for(auto it= data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
+        json& currentUser = it.value(); 
+
+        cout << currentUser["Fine"] << endl; 
+    }
+}
+
+
+
+void payFine(string username){
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data; 
+
+
+}
+

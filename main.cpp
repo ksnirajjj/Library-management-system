@@ -97,7 +97,8 @@ int main(){
                 cout << "1. Search books" << endl; 
                 cout << "2. Borrow a book" << endl; 
                 cout << "3. Return a book" << endl; 
-                cout << "4. Log Out" << endl; 
+                cout << "4. View Profile" << endl; 
+                cout << "5. Log Out" << endl; 
                 cin >> choice2; 
 
                 switch(choice2){
@@ -129,6 +130,14 @@ int main(){
                         goto loginMenuStudent; 
                         break; 
                     case 4:
+                        cout << "Overdue books: " << endl; 
+                        displayOverdueBooks(username); 
+                        cout << "-------------------------" << endl; 
+                        cout << "Borrowed books: "<< endl; 
+                        displayBooks(username); 
+                        cout << "Fine: $"; 
+                        displayFine(username); 
+                    case 5:
                         goto mainMenu; 
                         break; 
                     default:
