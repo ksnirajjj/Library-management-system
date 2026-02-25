@@ -272,7 +272,7 @@ void returnBook(string title, string username){
 
     for(auto it = data["Borrowed Books"][username].begin(); it!=data["Borrowed Books"][username].end(); it++){
         json& currentBook = it.value(); 
-
+    
         if(it.key()==title){
             found = true; 
         }
@@ -306,7 +306,7 @@ vector<string> overdueBooks(string username){
 
     for(auto it = data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
         json& currentUser = it.value(); 
-
+ 
         if(getDate()-currentUser["Date Borrowed"].get<double>() > 14){
             bookList.push_back(it.key()); 
         }
@@ -318,7 +318,7 @@ void displayOverdueBooks(string username){
     vector <string> bookList = overdueBooks(username); 
 
     for(int i=0; i<bookList.size(); i++){
-        cout << bookList[i] << endl; 
+        cout << (i+1) <<". " << bookList[i] << endl; 
     }
 }
 
@@ -326,9 +326,10 @@ void displayBooks(string username){
     ifstream file("library_data.json"); 
     json data; 
     file >> data; 
-
+    int i = 1; 
     for(auto it= data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
-        cout << it.key() << endl; 
+        cout << i << ". " << it.key() << endl; 
+        i++; 
     }
 }
 
@@ -336,7 +337,9 @@ double calculateFine(string username){
     ifstream file("library_data.json"); 
     json data; 
     file >> data; 
-    double fine; 
+    double fine = 0; 
+
+    cout << setprecision(2) << fixed; 
 
     for(auto it = data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
         json& currentUser = it.value(); 
@@ -345,6 +348,14 @@ double calculateFine(string username){
             fine +=  (getDate()-currentUser["Date Borrowed"].get<double>()-14)*2; 
         }
     }
+
+    data["Fines"][username] = {
+        {"Fine", fine}
+    }; 
+
+    ofstream output("library_data.json"); 
+    output << data.dump(4); 
+    
     return fine; 
 }
 
@@ -353,20 +364,55 @@ void displayFine(string username){
     json data; 
     file >> data; 
 
-    for(auto it= data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
+    for(auto it= data["Fines"].begin(); it!= data["Fines"].end(); it++){
         json& currentUser = it.value(); 
-
-        cout << currentUser["Fine"] << endl; 
+        if(it.key() == username){
+            cout << currentUser["Fine"].get<double>() << endl; 
+        }
     }
 }
-
-
 
 void payFine(string username){
     ifstream file("library_data.json"); 
     json data; 
     file >> data; 
 
+    for(auto it= data["Fines"].begin(); it!= data["Fines"].end(); it++){
+        json& currentUser = it.value(); 
+        
+       
+        if(it.key() == username){
+            currentUser["Fine"] = 0;  
+        }
+    }
 
+    for(auto it = data["Borrowed Books"][username].begin(); it!= data["Borrowed Books"][username].end(); it++){
+        json& currentUser = it.value(); 
+
+        currentUser["Date Borrowed"] = getDate(); 
+       
+    }
+    ofstream output("library_data.json"); 
+    output << data.dump(4); 
+
+    cout << "Fine has been paid and your borrowal has been renewed." << endl; 
+
+}
+
+void deleteBook(){
+    cout << "Enter the title of Book you want to delete: "; 
+    cin.ignore(); 
+    string title; 
+    getline(cin, title); 
+    title = toUpper(title); 
+
+
+    ifstream file("library_data.json"); 
+    json data; 
+    file >> data;
+
+    data["Books"].erase(title); 
+    ofstream output("library_data.json"); 
+    output << data.dump(4); 
 }
 

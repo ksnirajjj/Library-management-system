@@ -54,4 +54,8 @@ void displayBooks(string username);
 double calculateFine(string username); 
 
 void displayFine(string username); 
+
+void payFine(string username); 
+
+void deleteBook(); 
 #endif

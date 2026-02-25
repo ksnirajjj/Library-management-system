@@ -12,6 +12,7 @@ int main(){
     mainMenu:
     int choice1; // main menu choice
     int choice2;  // choice to search book by
+    int choice3; //choice to pay fine
     string key1, key2; 
     string titleToBorrow; 
     string titleToReturn; 
@@ -58,7 +59,8 @@ int main(){
                 cout << "1. Add New Book " << endl; 
                 cout << "2. View All Books" << endl; 
                 cout << "3. Search Books" << endl; 
-                cout << "4. Log Out" << endl; 
+                cout << "4. Delete Book" << endl; 
+                cout << "5. Log Out" << endl; 
                 cin >> choice2; 
                 Book b1;
 
@@ -85,12 +87,17 @@ int main(){
                         goto loginMenuAdmin;  
                         break; 
                     case 4:
+                        deleteBook(); 
+                        cout << "Book deleted successfully. " << endl; 
+                        break; 
+                    case 5:
                         goto mainMenu; 
                     default:
                         break; 
                 }
             }
             else if(userType == "Student"){
+                calculateFine(username); 
                 loginMenuStudent: 
                 cout << "--------------------------------------------" << endl; 
                 cout << "What would you like to do " << endl; 
@@ -137,6 +144,21 @@ int main(){
                         displayBooks(username); 
                         cout << "Fine: $"; 
                         displayFine(username); 
+                        cout << "Press one to pay fine: "; 
+                        cin >> choice3; 
+                        switch (choice3)
+                        {
+                            case 1:
+                                payFine(username); 
+                                goto loginMenuStudent; 
+                                break;
+                            
+                            default:
+                                goto loginMenuStudent; 
+                                break;
+                        }
+
+                        goto loginMenuStudent; 
                     case 5:
                         goto mainMenu; 
                         break; 
